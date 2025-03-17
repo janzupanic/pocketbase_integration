@@ -1,4 +1,4 @@
-import { createContext, createSignal, useContext, Show } from "solid-js";
+import { createContext, createSignal, useContext, Show, onMount } from "solid-js";
 import { pb } from "../services/pocketbase";
 
 // context
@@ -11,7 +11,7 @@ export function useAuth() {
 
 // component
 export function AuthProvider(props) {
-    const [session, setUser] = createSignal(null);
+    const [user, setUser] = createSignal(null);
     const [loading, setLoading] = createSignal(true);
 
 onMount(async () => {
@@ -35,7 +35,7 @@ onMount(async () => {
 
     return (
         <Show when={!loading()}>
-            <AuthContext.Provider value={session}>{props.children}</AuthContext.Provider>
+            <AuthContext.Provider value={user}>{props.children}</AuthContext.Provider>
         </Show>
   );
 }

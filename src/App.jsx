@@ -1,8 +1,11 @@
-import { AuthProvider } from "./components/AuthProvider";
-import { Router } from "@solidjs/router";
+import { AuthProvider, useAuth } from "./components/AuthProvider";
+import { Router, Route } from "@solidjs/router";
+
 import Home from "./pages/Home";
 import Signin from "./pages/Signin";
 import Error from "./pages/Error";
+import { Show } from "solid-js"
+import { A } from "@solidjs/router";
 
 
 export default function App() {
@@ -22,15 +25,29 @@ export default function App() {
 }
 
 function Layout(props) {
+  const user = useAuth();
+
   return (
-    <div>
+    <>
+    <header class="flex flex-row gap-2 items-center p-2">
+<div class="flex-none">Zaglavlje</div>
+<nav class="flex-1 text-right">
+  <Show when = {user()}>
+    Odjava
+  </Show>
 
-<div>Zaglavlje</div>
+  <Show when={!user()} >
+    <A class ="p-2 bg-amber-500 text-gray-50 font-bold rounded hover:brightness-90" href="/signin">Prijava</A>
 
-<div>(props.children)</div>
+  </Show>
+</nav>
+</header>
 
-<div>Podnožje</div>
+<main>{props.children}</main>
 
-</div>
+<footer>Podnožje</footer>
+
+
+</>
   );
 }
